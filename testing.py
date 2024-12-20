@@ -3,6 +3,72 @@ import matplotlib.pyplot as plt
 from scipy.spatial.transform import Rotation as R
 
 data = """
+Acceleration X: 0.00, Y: 0.00, Z: -9.81 m/s^2
+Rotation X: 0.00, Y: 0.00, Z: 0.00 rad/s
+Temperature: 25.00 degC
+
+Acceleration X: 0.00, Y: 0.00, Z: -9.81 m/s^2
+Rotation X: 0.00, Y: 0.00, Z: 0.00 rad/s
+Temperature: 25.05 degC
+
+Acceleration X: 0.00, Y: 0.00, Z: -9.81 m/s^2
+Rotation X: 0.00, Y: 0.00, Z: 0.00 rad/s
+Temperature: 25.10 degC
+
+Acceleration X: 0.00, Y: 0.00, Z: -9.81 m/s^2
+Rotation X: 0.00, Y: 0.00, Z: 0.00 rad/s
+Temperature: 25.15 degC
+
+Acceleration X: 0.00, Y: 0.00, Z: 2.19 m/s^2
+Rotation X: 0.00, Y: 0.00, Z: 0.00 rad/s
+Temperature: 25.20 degC
+
+Acceleration X: 0.00, Y: 0.00, Z: 2.19 m/s^2
+Rotation X: 0.00, Y: 0.00, Z: 0.00 rad/s
+Temperature: 25.25 degC
+
+Acceleration X: 0.00, Y: 0.00, Z: 2.19 m/s^2
+Rotation X: 0.00, Y: 0.00, Z: 0.00 rad/s
+Temperature: 25.30 degC
+
+Acceleration X: 0.00, Y: 0.00, Z: 2.19 m/s^2
+Rotation X: 0.00, Y: 0.00, Z: 0.00 rad/s
+Temperature: 25.35 degC
+
+Acceleration X: 0.00, Y: 0.00, Z: -9.81 m/s^2
+Rotation X: 0.00, Y: 0.00, Z: 0.00 rad/s
+Temperature: 25.40 degC
+
+Acceleration X: 0.00, Y: 0.00, Z: -9.81 m/s^2
+Rotation X: 0.00, Y: 0.00, Z: 0.00 rad/s
+Temperature: 25.45 degC
+
+Acceleration X: 0.00, Y: 0.00, Z: -9.81 m/s^2
+Rotation X: 0.00, Y: 0.00, Z: 0.00 rad/s
+Temperature: 25.50 degC
+
+Acceleration X: 0.00, Y: 0.00, Z: -9.81 m/s^2
+Rotation X: 0.00, Y: 0.00, Z: 0.00 rad/s
+Temperature: 25.55 degC
+
+Acceleration X: 0.00, Y: 0.00, Z: -11.81 m/s^2
+Rotation X: 0.00, Y: 0.00, Z: 0.00 rad/s
+Temperature: 25.60 degC
+
+Acceleration X: 0.00, Y: 0.00, Z: -11.81 m/s^2
+Rotation X: 0.00, Y: 0.00, Z: 0.00 rad/s
+Temperature: 25.65 degC
+
+Acceleration X: 0.00, Y: 0.00, Z: -11.81 m/s^2
+Rotation X: 0.00, Y: 0.00, Z: 0.00 rad/s
+Temperature: 25.70 degC
+
+Acceleration X: 0.00, Y: 0.00, Z: -11.81 m/s^2
+Rotation X: 0.00, Y: 0.00, Z: 0.00 rad/s
+Temperature: 25.75 degC
+
+"""
+data2 = """
 Acceleration X: -1.04, Y: 6.12, Z: 6.79 m/s^2
 Rotation X: -0.14, Y: -0.05, Z: 0.03 rad/s
 Temperature: 32.38 degC
@@ -210,7 +276,7 @@ plt.ylabel('Angle (degrees)')
 plt.legend()
 plt.grid(True)
 
-# Plot Positions (cm)
+# Plot Positions (m)
 plt.figure()
 plt.plot(time, positions[:,0], label='X Position (m)')
 plt.plot(time, positions[:,1], label='Y Position (m)')
@@ -219,6 +285,35 @@ plt.xlabel('Time (s)')
 plt.ylabel('Position (cm)')
 plt.title('Position vs Time (with Gravity Removed)')
 plt.legend()
+plt.grid(True)
+
+pos = positions
+
+# Plot XY projection
+plt.figure()
+plt.plot(pos[:,0], pos[:,1], marker='o')
+plt.xlabel('X (cm)')
+plt.ylabel('Y (cm)')
+plt.title('XY Projection')
+plt.axis('equal')
+plt.grid(True)
+
+# Plot XZ projection
+plt.figure()
+plt.plot(pos[:,0], pos[:,2], marker='o')
+plt.xlabel('X (cm)')
+plt.ylabel('Z (cm)')
+plt.title('XZ Projection')
+plt.axis('equal')
+plt.grid(True)
+
+# Plot YZ projection
+plt.figure()
+plt.plot(pos[:,1], pos[:,2], marker='o')
+plt.xlabel('Y (cm)')
+plt.ylabel('Z (cm)')
+plt.title('YZ Projection')
+plt.axis('equal')
 plt.grid(True)
 
 plt.show()
