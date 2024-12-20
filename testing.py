@@ -2,125 +2,223 @@ import numpy as np
 import matplotlib.pyplot as plt
 from scipy.spatial.transform import Rotation as R
 
-# Sample data (use your actual data)
 data = """
-aX = -6096 | aY = 96 | aZ = 13780 | gX = -532 | gY = 361 | gZ = 302
-aX = -6172 | aY = 160 | aZ = 13812 | gX = -497 | gY = 99 | gZ = 273
-aX = -6456 | aY = 152 | aZ = 13640 | gX = -566 | gY = 2264 | gZ = 241
-aX = -6828 | aY = -68 | aZ = 13284 | gX = -366 | gY = 95 | gZ = -373
-aX = -6816 | aY = -32 | aZ = 13544 | gX = -394 | gY = -952 | gZ = 193
-aX = -7160 | aY = 1844 | aZ = 13312 | gX = -641 | gY = 378 | gZ = 510
-aX = -6924 | aY = 2412 | aZ = 13540 | gX = -407 | gY = 363 | gZ = 854
-aX = -6932 | aY = -1720 | aZ = 13424 | gX = -536 | gY = -1625 | gZ = 92
-aX = -6348 | aY = -276 | aZ = 13476 | gX = -470 | gY = -406 | gZ = 136
-aX = -6968 | aY = -328 | aZ = 13376 | gX = -601 | gY = 1555 | gZ = -118
-aX = -7160 | aY = 4 | aZ = 13152 | gX = -498 | gY = 365 | gZ = 309
-aX = -7356 | aY = 148 | aZ = 13136 | gX = -442 | gY = 365 | gZ = 296
+Acceleration X: -1.04, Y: 6.12, Z: 6.79 m/s^2
+Rotation X: -0.14, Y: -0.05, Z: 0.03 rad/s
+Temperature: 32.38 degC
+
+Acceleration X: -0.93, Y: 6.11, Z: 6.82 m/s^2
+Rotation X: 0.03, Y: 0.06, Z: 0.08 rad/s
+Temperature: 32.44 degC
+
+Acceleration X: -1.09, Y: 6.39, Z: 6.56 m/s^2
+Rotation X: 0.08, Y: 0.03, Z: 0.00 rad/s
+Temperature: 32.50 degC
+
+Acceleration X: -1.18, Y: 6.58, Z: 6.34 m/s^2
+Rotation X: -0.10, Y: -0.04, Z: 0.04 rad/s
+Temperature: 32.55 degC
+
+Acceleration X: -1.13, Y: 6.54, Z: 6.39 m/s^2
+Rotation X: -0.05, Y: -0.04, Z: 0.02 rad/s
+Temperature: 32.60 degC
+
+Acceleration X: -1.11, Y: 6.56, Z: 6.39 m/s^2
+Rotation X: -0.06, Y: -0.01, Z: 0.03 rad/s
+Temperature: 32.64 degC
+
+Acceleration X: -1.13, Y: 6.58, Z: 6.38 m/s^2
+Rotation X: -0.05, Y: -0.01, Z: 0.02 rad/s
+Temperature: 32.67 degC
+
+Acceleration X: -1.28, Y: 6.68, Z: 6.24 m/s^2
+Rotation X: -0.01, Y: 0.06, Z: 0.03 rad/s
+Temperature: 32.71 degC
+
+Acceleration X: -1.94, Y: 6.32, Z: 6.34 m/s^2
+Rotation X: -0.17, Y: 0.27, Z: -0.00 rad/s
+Temperature: 32.75 degC
+
+Acceleration X: -0.62, Y: 2.14, Z: 8.87 m/s^2
+Rotation X: -0.33, Y: -0.09, Z: -0.10 rad/s
+Temperature: 32.79 degC
+
+Acceleration X: -0.43, Y: 1.86, Z: 8.96 m/s^2
+Rotation X: -0.09, Y: -0.02, Z: 0.06 rad/s
+Temperature: 32.78 degC
+
+Acceleration X: -0.38, Y: 2.01, Z: 8.94 m/s^2
+Rotation X: 0.03, Y: -0.03, Z: 0.07 rad/s
+Temperature: 32.75 degC
+
+Acceleration X: -0.48, Y: 6.51, Z: 6.54 m/s^2
+Rotation X: 0.80, Y: 0.02, Z: -0.02 rad/s
+Temperature: 32.71 degC
+
+Acceleration X: -1.48, Y: 8.46, Z: 4.27 m/s^2
+Rotation X: 0.11, Y: -0.09, Z: 0.06 rad/s
+Temperature: 32.71 degC
+
+Acceleration X: -0.13, Y: 7.78, Z: 4.70 m/s^2
+Rotation X: -0.19, Y: -0.18, Z: 0.08 rad/s
+Temperature: 32.77 degC
+
+Acceleration X: 1.40, Y: 8.07, Z: 4.63 m/s^2
+Rotation X: -0.07, Y: -0.25, Z: 0.17 rad/s
+Temperature: 32.82 degC
+
+Acceleration X: 2.54, Y: 8.07, Z: 4.17 m/s^2
+Rotation X: -0.07, Y: -0.26, Z: 0.24 rad/s
+Temperature: 32.82 degC
+
+Acceleration X: 3.46, Y: 7.75, Z: 3.86 m/s^2
+Rotation X: -0.06, Y: -0.08, Z: 0.21 rad/s
+Temperature: 32.84 degC
+
+Acceleration X: 5.70, Y: 6.84, Z: 3.65 m/s^2
+Rotation X: -0.23, Y: -0.62, Z: 0.57 rad/s
+Temperature: 32.85 degC
+
+Acceleration X: 7.60, Y: 5.27, Z: 3.01 m/s^2
+Rotation X: -0.15, Y: -0.19, Z: 0.17 rad/s
+Temperature: 32.87 degC
+
+Acceleration X: 7.01, Y: 5.85, Z: 3.92 m/s^2
+Rotation X: -0.10, Y: 0.36, Z: -0.19 rad/s
+Temperature: 32.88 degC
+
+Acceleration X: 5.75, Y: 6.02, Z: 4.77 m/s^2
+Rotation X: -0.12, Y: 0.11, Z: -0.10 rad/s
+Temperature: 32.90 degC
+
+Acceleration X: 4.80, Y: 6.48, Z: 6.22 m/s^2
+Rotation X: -0.11, Y: 0.34, Z: -0.14 rad/s
+Temperature: 32.91 degC
+
+Acceleration X: 3.26, Y: 6.22, Z: 6.53 m/s^2
+Rotation X: -0.08, Y: 0.29, Z: -0.21 rad/s
+Temperature: 32.96 degC
+
+Acceleration X: 0.93, Y: 6.77, Z: 6.37 m/s^2
+Rotation X: 0.06, Y: 0.22, Z: -0.31 rad/s
+Temperature: 32.96 degC
+
+Acceleration X: -0.30, Y: 7.19, Z: 5.97 m/s^2
+Rotation X: -0.23, Y: -0.15, Z: 0.14 rad/s
+Temperature: 32.97 degC
 """
 
-# Define scaling factors
-ACCEL_SCALE = 1 / 32768.0  # ±2g range
-GYRO_SCALE = 250 / 32768.0 # ±250°/s range
-G_CONVERSION = 9.80665
+lines = [l.strip() for l in data.strip().split('\n') if l.strip()]
 
-accelerometer_data = []
-gyroscope_data = []
+accelerations = []
+rotations = []
 
-for line in data.strip().split('\n'):
-    parts = line.strip().split('|')
-    ax_raw = float(parts[0].split('=')[1])
-    ay_raw = float(parts[1].split('=')[1])
-    az_raw = float(parts[2].split('=')[1])
-    gx_raw = float(parts[3].split('=')[1])
-    gy_raw = float(parts[4].split('=')[1])
-    gz_raw = float(parts[5].split('=')[1])
+for i in range(0, len(lines), 3):
+    accel_line = lines[i]
+    rot_line = lines[i+1]
 
-    # Convert raw accelerometer data to m/s²
-    ax = ax_raw * ACCEL_SCALE * G_CONVERSION
-    ay = ay_raw * ACCEL_SCALE * G_CONVERSION
-    az = az_raw * ACCEL_SCALE * G_CONVERSION
+    # Parse acceleration
+    accel_str = accel_line.replace("Acceleration", "").replace("X:", "").replace("Y:", "").replace("Z:", "")
+    parts = accel_str.split(',')
+    ax = float(parts[0].strip())
+    ay = float(parts[1].strip())
+    az_str = parts[2].strip().split(' ')[0]
+    az = float(az_str)
 
-    # Convert raw gyroscope data to rad/s
-    gx = np.deg2rad(gx_raw * GYRO_SCALE)
-    gy = np.deg2rad(gy_raw * GYRO_SCALE)
-    gz = np.deg2rad(gz_raw * GYRO_SCALE)
+    # Parse rotation
+    rot_str = rot_line.replace("Rotation", "").replace("X:", "").replace("Y:", "").replace("Z:", "")
+    rparts = rot_str.split(',')
+    gx = float(rparts[0].strip())
+    gy = float(rparts[1].strip())
+    gz_str = rparts[2].strip().split(' ')[0]
+    gz = float(gz_str)
 
-    accelerometer_data.append([ax, ay, az])
-    gyroscope_data.append([gx, gy, gz])
+    accelerations.append([ax, ay, az])
+    rotations.append([gx, gy, gz])
 
-accelerometer_data = np.array(accelerometer_data)
-gyroscope_data = np.array(gyroscope_data)
+accelerations = np.array(accelerations)
+rotations = np.array(rotations)
 
-num_samples = len(accelerometer_data)
-dt = 0.5  # seconds
+dt = 0.5
+num_samples = len(accelerations)
 
-# Initial orientation estimate based on gravity:
-acc_initial = accelerometer_data[0]
-acc_initial_normalized = acc_initial / np.linalg.norm(acc_initial)
-g_fixed = np.array([0, 0, 9.80665])
-g_fixed_normalized = g_fixed / np.linalg.norm(g_fixed)
+# Estimate gravity from the first reading
+initial_acc = accelerations[0]
+norm_g = np.linalg.norm(initial_acc)
+gravity_vector = (initial_acc / norm_g) * 9.80665
 
-# Align sensor Z-axis with gravity (assuming no initial rotation about gravity axis)
-initial_orientation = R.align_vectors([g_fixed_normalized], [acc_initial_normalized])[0]
-
-orientations = [initial_orientation]
 positions = [np.zeros(3)]
 velocities = [np.zeros(3)]
 
+# Orientation tracking:
+# Start with identity orientation
+current_orientation = R.from_euler('xyz', [0,0,0], degrees=False)
+orientations = [current_orientation]
+
 for i in range(1, num_samples):
-    # Update orientation from gyro (this is simplistic and will drift)
-    omega = gyroscope_data[i]
-    delta_theta = omega * dt
-    delta_rotation = R.from_rotvec(delta_theta)
-    current_orientation = orientations[-1] * delta_rotation
-    orientations.append(current_orientation)
+    # Remove gravity
+    acc_linear = accelerations[i] - gravity_vector
 
-    # Rotate accelerometer reading into fixed frame
-    acc_body = accelerometer_data[i]
-    acc_fixed_frame = current_orientation.apply(acc_body)
-
-    # Subtract gravity
-    acc_linear = acc_fixed_frame - g_fixed
-
-    # Integrate acceleration to get velocity and position
+    # Integrate for velocity and position
     v = velocities[-1] + acc_linear * dt
     p = positions[-1] + v * dt
 
     velocities.append(v)
     positions.append(p)
 
+    # Orientation update:
+    # Integrate gyro (in rad/s) over dt to get rotation vector
+    omega = rotations[i]  # [gx, gy, gz]
+    delta_theta = omega * dt  # small rotation
+    delta_rotation = R.from_rotvec(delta_theta)
+    current_orientation = orientations[-1] * delta_rotation
+    orientations.append(current_orientation)
+
 positions = np.array(positions)
 time = np.arange(num_samples)*dt
 
-# Plot raw accelerometer data
-fig_a = plt.figure()
-ax_a = fig_a.add_subplot(111)
-ax_a.plot(time, accelerometer_data[:,0], label='Ax (m/s²)')
-ax_a.plot(time, accelerometer_data[:,1], label='Ay (m/s²)')
-ax_a.plot(time, accelerometer_data[:,2], label='Az (m/s²)')
-ax_a.set_title("Accelerometer Data")
-ax_a.set_xlabel('Time (s)')
-ax_a.set_ylabel('Acceleration (m/s²)')
-ax_a.legend()
+# Extract Euler angles (roll, pitch, yaw)
+euler_angles = []
+for o in orientations:
+    # 'xyz' convention: roll around X, pitch around Y, yaw around Z
+    euler = o.as_euler('xyz', degrees=True)  # in degrees
+    euler_angles.append(euler)
+euler_angles = np.array(euler_angles)
+roll = euler_angles[:,0]
+pitch = euler_angles[:,1]
+yaw = euler_angles[:,2]
 
-# Plot raw gyroscope data
-fig_g = plt.figure()
-ax_g = fig_g.add_subplot(111)
-ax_g.plot(time, gyroscope_data[:,0], label='Gx (rad/s)')
-ax_g.plot(time, gyroscope_data[:,1], label='Gy (rad/s)')
-ax_g.plot(time, gyroscope_data[:,2], label='Gz (rad/s)')
-ax_g.set_title("Gyroscope Data")
-ax_g.set_xlabel('Time (s)')
-ax_g.set_ylabel('Angular Velocity (rad/s)')
-ax_g.legend()
+# Plot raw accelerations (m/s²)
+plt.figure()
+plt.plot(time, accelerations[:,0], label='Ax (m/s²)')
+plt.plot(time, accelerations[:,1], label='Ay (m/s²)')
+plt.plot(time, accelerations[:,2], label='Az (m/s²)')
+plt.title('Raw Accelerations')
+plt.xlabel('Time (s)')
+plt.ylabel('Acceleration (m/s²)')
+plt.legend()
+plt.grid(True)
 
-# Plot the integrated positions (Keep in mind these will likely drift!)
-fig_p = plt.figure()
-ax_p = fig_p.add_subplot(111, projection='3d')
-ax_p.plot(positions[:,0], positions[:,1], positions[:,2], marker='o')
-ax_p.set_xlabel('X (m)')
-ax_p.set_ylabel('Y (m)')
-ax_p.set_zlabel('Z (m)')
-ax_p.set_title("Estimated Trajectory (Likely with Drift)")
+# Plot Roll, Pitch, Yaw
+plt.figure()
+plt.plot(time, roll, label='Roll (deg)')
+plt.plot(time, pitch, label='Pitch (deg)')
+plt.plot(time, yaw, label='Yaw (deg)')
+plt.title('Roll, Pitch, Yaw vs Time')
+plt.xlabel('Time (s)')
+plt.ylabel('Angle (degrees)')
+plt.legend()
+plt.grid(True)
+
+# Plot Positions (cm)
+plt.figure()
+plt.plot(time, positions[:,0], label='X Position (m)')
+plt.plot(time, positions[:,1], label='Y Position (m)')
+plt.plot(time, positions[:,2], label='Z Position (m)')
+plt.xlabel('Time (s)')
+plt.ylabel('Position (cm)')
+plt.title('Position vs Time (with Gravity Removed)')
+plt.legend()
+plt.grid(True)
 
 plt.show()
