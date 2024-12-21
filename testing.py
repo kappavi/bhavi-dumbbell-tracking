@@ -2,6 +2,118 @@ import numpy as np
 import matplotlib.pyplot as plt
 from scipy.spatial.transform import Rotation as R
 
+
+data = """
+Acceleration X: -0.56, Y: 1.53, Z: 8.92 m/s^2
+Rotation X: -0.06, Y: -0.02, Z: 0.03 rad/s
+Temperature: 34.88 degC
+
+Acceleration X: -0.57, Y: 1.63, Z: 8.94 m/s^2
+Rotation X: -0.07, Y: -0.08, Z: 0.03 rad/s
+Temperature: 34.90 degC
+
+Acceleration X: -0.30, Y: 1.75, Z: 8.91 m/s^2
+Rotation X: -0.05, Y: -0.05, Z: 0.01 rad/s
+Temperature: 34.92 degC
+
+Acceleration X: 0.40, Y: 1.85, Z: 8.89 m/s^2
+Rotation X: -0.04, Y: -0.04, Z: 0.06 rad/s
+Temperature: 34.94 degC
+
+Acceleration X: 2.38, Y: 2.22, Z: 8.23 m/s^2
+Rotation X: 0.04, Y: -0.86, Z: 0.05 rad/s
+Temperature: 34.97 degC
+
+Acceleration X: 4.90, Y: 2.57, Z: 7.63 m/s^2
+Rotation X: 0.06, Y: -0.45, Z: 0.06 rad/s
+Temperature: 34.98 degC
+
+Acceleration X: 6.91, Y: 4.01, Z: 5.01 m/s^2
+Rotation X: 0.05, Y: -1.02, Z: -0.25 rad/s
+Temperature: 35.01 degC
+
+Acceleration X: 8.22, Y: 5.03, Z: -0.59 m/s^2
+Rotation X: 0.47, Y: -1.11, Z: -0.13 rad/s
+Temperature: 35.05 degC
+
+Acceleration X: 6.02, Y: 4.01, Z: -8.35 m/s^2
+Rotation X: 0.96, Y: -1.76, Z: -0.28 rad/s
+Temperature: 35.13 degC
+
+Acceleration X: 2.05, Y: 2.16, Z: -10.70 m/s^2
+Rotation X: -0.00, Y: -0.31, Z: 0.50 rad/s
+Temperature: 35.21 degC
+
+Acceleration X: -0.07, Y: 2.12, Z: -11.05 m/s^2
+Rotation X: -0.08, Y: -0.11, Z: 0.03 rad/s
+Temperature: 35.24 degC
+
+Acceleration X: 0.17, Y: 2.31, Z: -10.65 m/s^2
+Rotation X: -0.06, Y: 0.03, Z: 0.02 rad/s
+Temperature: 35.30 degC
+
+Acceleration X: 0.37, Y: 2.46, Z: -10.66 m/s^2
+Rotation X: -0.05, Y: -0.04, Z: 0.07 rad/s
+Temperature: 35.34 degC
+
+Acceleration X: 0.75, Y: 2.47, Z: -10.45 m/s^2
+Rotation X: -0.11, Y: -0.03, Z: 0.01 rad/s
+Temperature: 35.38 degC
+
+"""
+data5 = """
+Acceleration X: 1.62, Y: 0.20, Z: 8.93 m/s^2
+Rotation X: -0.08, Y: -0.02, Z: 0.03 rad/s
+Temperature: 33.73 degC
+
+Acceleration X: 1.66, Y: 0.13, Z: 8.92 m/s^2
+Rotation X: -0.07, Y: -0.01, Z: 0.03 rad/s
+Temperature: 33.78 degC
+
+Acceleration X: 1.80, Y: 0.01, Z: 8.88 m/s^2
+Rotation X: -0.20, Y: -0.20, Z: -0.04 rad/s
+Temperature: 33.79 degC
+
+Acceleration X: 1.95, Y: -0.30, Z: 8.72 m/s^2
+Rotation X: 0.01, Y: 0.05, Z: -0.04 rad/s
+Temperature: 33.81 degC
+
+Acceleration X: 2.13, Y: 0.25, Z: 8.83 m/s^2
+Rotation X: -0.08, Y: -0.09, Z: -0.03 rad/s
+Temperature: 33.82 degC
+
+Acceleration X: 2.47, Y: 0.49, Z: 8.31 m/s^2
+Rotation X: -0.04, Y: -0.10, Z: 0.02 rad/s
+Temperature: 33.83 degC
+
+Acceleration X: 3.00, Y: 0.52, Z: 8.41 m/s^2
+Rotation X: -0.06, Y: -0.12, Z: 0.04 rad/s
+Temperature: 33.84 degC
+
+Acceleration X: 2.97, Y: 0.52, Z: 8.85 m/s^2
+Rotation X: -0.07, Y: -0.02, Z: 0.02 rad/s
+Temperature: 33.85 degC
+
+Acceleration X: 2.82, Y: 0.51, Z: 8.67 m/s^2
+Rotation X: -0.15, Y: -0.07, Z: 0.01 rad/s
+Temperature: 33.88 degC
+
+Acceleration X: 2.89, Y: 0.11, Z: 8.76 m/s^2
+Rotation X: -0.11, Y: 0.01, Z: 0.04 rad/s
+Temperature: 33.88 degC
+
+Acceleration X: 3.27, Y: -0.43, Z: 8.71 m/s^2
+Rotation X: -0.19, Y: 0.03, Z: 0.07 rad/s
+Temperature: 33.89 degC
+
+Acceleration X: 2.72, Y: -0.84, Z: 8.49 m/s^2
+Rotation X: -0.15, Y: 0.04, Z: 0.02 rad/s
+Temperature: 33.91 degC
+
+Acceleration X: 1.89, Y: -0.48, Z: 8.86 m/s^2
+Rotation X: -0.13, Y: 0.03, Z: 0.10 rad/s
+Temperature: 33.94 degC"""
+
 data2 = """
 Acceleration X: 0.00, Y: 0.00, Z: -9.81 m/s^2
 Rotation X: 0.00, Y: 0.00, Z: 0.00 rad/s
@@ -116,7 +228,7 @@ Rotation X: 0.00, Y: 0.00, Z: 0.00 rad/s
 Temperature: 25.15 degC
 
 """
-data = """
+data2 = """
 Acceleration X: -1.04, Y: 6.12, Z: 6.79 m/s^2
 Rotation X: -0.14, Y: -0.05, Z: 0.03 rad/s
 Temperature: 32.38 degC
@@ -308,76 +420,95 @@ pitch = euler_angles[:,1]
 yaw = euler_angles[:,2]
 
 # Plot raw accelerations (m/s²)
-plt.figure()
+plt.subplot(3, 3, 1)
+# plt.figure()
 plt.plot(time, accelerations[:,0], label='Ax (m/s²)')
 plt.plot(time, accelerations[:,1], label='Ay (m/s²)')
 plt.plot(time, accelerations[:,2], label='Az (m/s²)')
-plt.title('Raw Accelerations')
+plt.title('Accelerations')
 plt.xlabel('Time (s)')
 plt.ylabel('Acceleration (m/s²)')
-plt.legend()
+# plt.legend()
 plt.grid(True)
 
-# # Plot Roll, Pitch, Yaw
+# Plot Roll, Pitch, Yaw
+plt.subplot(3, 3, 2)
 # plt.figure()
-# plt.plot(time, roll, label='Roll (deg)')
-# plt.plot(time, pitch, label='Pitch (deg)')
-# plt.plot(time, yaw, label='Yaw (deg)')
-# plt.title('Roll, Pitch, Yaw vs Time')
-# plt.xlabel('Time (s)')
-# plt.ylabel('Angle (degrees)')
+plt.plot(time, roll, label='Roll (deg)')
+plt.plot(time, pitch, label='Pitch (deg)')
+plt.plot(time, yaw, label='Yaw (deg)')
+plt.title('Roll, Pitch, Yaw vs Time')
+plt.xlabel('Time (s)')
+plt.ylabel('Angle (degrees)')
 # plt.legend()
-# plt.grid(True)
+plt.grid(True)
+
+# Plot Roll, Pitch, Yaw
+plt.subplot(3, 3, 5)
+# plt.figure()
+plt.plot(time, rotations[:,0], label='Roll Rate (deg/s)')
+plt.plot(time, rotations[:,1], label='Pitch Rate (deg/s)')
+plt.plot(time, rotations[:,2], label='Yaw Rate(deg/s)')
+plt.title('Change in Roll, Pitch, Yaw vs Time')
+plt.xlabel('Time (s)')
+plt.ylabel('Angle (degrees)')
+# plt.legend()
+plt.grid(True)
 
 # Plot Positions (m)
-plt.figure()
+plt.subplot(3, 3, 7)
+# plt.figure()
 plt.plot(time, positions[:,0], label='X Position (m)')
 plt.plot(time, positions[:,1], label='Y Position (m)')
 plt.plot(time, positions[:,2], label='Z Position (m)')
 plt.xlabel('Time (s)')
 plt.ylabel('Position (cm)')
 plt.title('Position vs Time (with Gravity Removed)')
-plt.legend()
+# plt.legend()
 plt.grid(True)
 
 pos = positions
 
 # Plot Velocities (m/s)
-plt.figure()
+plt.subplot(3, 3, 4)
+# plt.figure()
 plt.plot(time, velocities[:,0], label='X Velocity (m/s)')
 plt.plot(time, velocities[:,1], label='Y Velocity (m/s)')
 plt.plot(time, velocities[:,2], label='Z Velocity (m/s)')
 plt.xlabel('Time (s)')
 plt.ylabel('Velocities (m/s)')
 plt.title('Velocities vs Time (with Gravity Removed)')
-plt.legend()
+# plt.legend()
 plt.grid(True)
 
-# # Plot XY projection
+# Plot XY projection
+plt.subplot(3, 3, 3)
 # plt.figure()
-# plt.plot(pos[:,0], pos[:,1], marker='o')
-# plt.xlabel('X (cm)')
-# plt.ylabel('Y (cm)')
-# plt.title('XY Projection')
-# plt.axis('equal')
-# plt.grid(True)
+plt.plot(pos[:,0], pos[:,1], marker='o')
+plt.xlabel('X (cm)')
+plt.ylabel('Y (cm)')
+plt.title('XY Projection')
+plt.axis('equal')
+plt.grid(True)
 
-# # Plot XZ projection
+# Plot XZ projection
+plt.subplot(3, 3, 6)
 # plt.figure()
-# plt.plot(pos[:,0], pos[:,2], marker='o')
-# plt.xlabel('X (cm)')
-# plt.ylabel('Z (cm)')
-# plt.title('XZ Projection')
-# plt.axis('equal')
-# plt.grid(True)
+plt.plot(pos[:,0], pos[:,2], marker='o')
+plt.xlabel('X (cm)')
+plt.ylabel('Z (cm)')
+plt.title('XZ Projection')
+plt.axis('equal')
+plt.grid(True)
 
-# # Plot YZ projection
+# Plot YZ projection
+plt.subplot(3, 3, 9)
 # plt.figure()
-# plt.plot(pos[:,1], pos[:,2], marker='o')
-# plt.xlabel('Y (cm)')
-# plt.ylabel('Z (cm)')
-# plt.title('YZ Projection')
-# plt.axis('equal')
-# plt.grid(True)
+plt.plot(pos[:,1], pos[:,2], marker='o')
+plt.xlabel('Y (cm)')
+plt.ylabel('Z (cm)')
+plt.title('YZ Projection')
+plt.axis('equal')
+plt.grid(True)
 
 plt.show()
