@@ -2,7 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from scipy.spatial.transform import Rotation as R
 
-data = """
+data2 = """
 Acceleration X: 0.00, Y: 0.00, Z: -9.81 m/s^2
 Rotation X: 0.00, Y: 0.00, Z: 0.00 rad/s
 Temperature: 25.00 degC
@@ -19,21 +19,37 @@ Acceleration X: 0.00, Y: 0.00, Z: -9.81 m/s^2
 Rotation X: 0.00, Y: 0.00, Z: 0.00 rad/s
 Temperature: 25.15 degC
 
-Acceleration X: 0.00, Y: 0.00, Z: 2.19 m/s^2
+Acceleration X: 0.00, Y: 0.00, Z: -7.81 m/s^2
 Rotation X: 0.00, Y: 0.00, Z: 0.00 rad/s
 Temperature: 25.20 degC
 
-Acceleration X: 0.00, Y: 0.00, Z: 2.19 m/s^2
+Acceleration X: 0.00, Y: 0.00, Z: -7.81 m/s^2
 Rotation X: 0.00, Y: 0.00, Z: 0.00 rad/s
 Temperature: 25.25 degC
 
-Acceleration X: 0.00, Y: 0.00, Z: 2.19 m/s^2
+Acceleration X: 0.00, Y: 0.00, Z: -7.81 m/s^2
 Rotation X: 0.00, Y: 0.00, Z: 0.00 rad/s
 Temperature: 25.30 degC
 
-Acceleration X: 0.00, Y: 0.00, Z: 2.19 m/s^2
+Acceleration X: 0.00, Y: 0.00, Z: -7.81 m/s^2
 Rotation X: 0.00, Y: 0.00, Z: 0.00 rad/s
 Temperature: 25.35 degC
+
+Acceleration X: 0.00, Y: 0.00, Z: -11.81 m/s^2
+Rotation X: 0.00, Y: 0.00, Z: 0.00 rad/s
+Temperature: 25.60 degC
+
+Acceleration X: 0.00, Y: 0.00, Z: -11.81 m/s^2
+Rotation X: 0.00, Y: 0.00, Z: 0.00 rad/s
+Temperature: 25.65 degC
+
+Acceleration X: 0.00, Y: 0.00, Z: -11.81 m/s^2
+Rotation X: 0.00, Y: 0.00, Z: 0.00 rad/s
+Temperature: 25.70 degC
+
+Acceleration X: 0.00, Y: 0.00, Z: -11.81 m/s^2
+Rotation X: 0.00, Y: 0.00, Z: 0.00 rad/s
+Temperature: 25.75 degC
 
 Acceleration X: 0.00, Y: 0.00, Z: -9.81 m/s^2
 Rotation X: 0.00, Y: 0.00, Z: 0.00 rad/s
@@ -67,8 +83,40 @@ Acceleration X: 0.00, Y: 0.00, Z: -11.81 m/s^2
 Rotation X: 0.00, Y: 0.00, Z: 0.00 rad/s
 Temperature: 25.75 degC
 
+Acceleration X: 0.00, Y: 0.00, Z: -7.81 m/s^2
+Rotation X: 0.00, Y: 0.00, Z: 0.00 rad/s
+Temperature: 25.20 degC
+
+Acceleration X: 0.00, Y: 0.00, Z: -7.81 m/s^2
+Rotation X: 0.00, Y: 0.00, Z: 0.00 rad/s
+Temperature: 25.25 degC
+
+Acceleration X: 0.00, Y: 0.00, Z: -7.81 m/s^2
+Rotation X: 0.00, Y: 0.00, Z: 0.00 rad/s
+Temperature: 25.30 degC
+
+Acceleration X: 0.00, Y: 0.00, Z: -7.81 m/s^2
+Rotation X: 0.00, Y: 0.00, Z: 0.00 rad/s
+Temperature: 25.35 degC
+
+Acceleration X: 0.00, Y: 0.00, Z: -9.81 m/s^2
+Rotation X: 0.00, Y: 0.00, Z: 0.00 rad/s
+Temperature: 25.00 degC
+
+Acceleration X: 0.00, Y: 0.00, Z: -9.81 m/s^2
+Rotation X: 0.00, Y: 0.00, Z: 0.00 rad/s
+Temperature: 25.05 degC
+
+Acceleration X: 0.00, Y: 0.00, Z: -9.81 m/s^2
+Rotation X: 0.00, Y: 0.00, Z: 0.00 rad/s
+Temperature: 25.10 degC
+
+Acceleration X: 0.00, Y: 0.00, Z: -9.81 m/s^2
+Rotation X: 0.00, Y: 0.00, Z: 0.00 rad/s
+Temperature: 25.15 degC
+
 """
-data2 = """
+data = """
 Acceleration X: -1.04, Y: 6.12, Z: 6.79 m/s^2
 Rotation X: -0.14, Y: -0.05, Z: 0.03 rad/s
 Temperature: 32.38 degC
@@ -215,6 +263,10 @@ gravity_vector = (initial_acc / norm_g) * 9.80665
 
 positions = [np.zeros(3)]
 velocities = [np.zeros(3)]
+rawAccelerations = accelerations
+print(accelerations[:,2])
+print(gravity_vector)
+accelerations[:,2] = accelerations[:,2] - gravity_vector[2]
 
 # Orientation tracking:
 # Start with identity orientation
@@ -223,7 +275,7 @@ orientations = [current_orientation]
 
 for i in range(1, num_samples):
     # Remove gravity
-    acc_linear = accelerations[i] - gravity_vector
+    acc_linear = accelerations[i]
 
     # Integrate for velocity and position
     v = velocities[-1] + acc_linear * dt
@@ -241,6 +293,7 @@ for i in range(1, num_samples):
     orientations.append(current_orientation)
 
 positions = np.array(positions)
+velocities = np.array(velocities)
 time = np.arange(num_samples)*dt
 
 # Extract Euler angles (roll, pitch, yaw)
@@ -265,16 +318,16 @@ plt.ylabel('Acceleration (m/s²)')
 plt.legend()
 plt.grid(True)
 
-# Plot Roll, Pitch, Yaw
-plt.figure()
-plt.plot(time, roll, label='Roll (deg)')
-plt.plot(time, pitch, label='Pitch (deg)')
-plt.plot(time, yaw, label='Yaw (deg)')
-plt.title('Roll, Pitch, Yaw vs Time')
-plt.xlabel('Time (s)')
-plt.ylabel('Angle (degrees)')
-plt.legend()
-plt.grid(True)
+# # Plot Roll, Pitch, Yaw
+# plt.figure()
+# plt.plot(time, roll, label='Roll (deg)')
+# plt.plot(time, pitch, label='Pitch (deg)')
+# plt.plot(time, yaw, label='Yaw (deg)')
+# plt.title('Roll, Pitch, Yaw vs Time')
+# plt.xlabel('Time (s)')
+# plt.ylabel('Angle (degrees)')
+# plt.legend()
+# plt.grid(True)
 
 # Plot Positions (m)
 plt.figure()
@@ -289,31 +342,42 @@ plt.grid(True)
 
 pos = positions
 
-# Plot XY projection
+# Plot Velocities (m/s)
 plt.figure()
-plt.plot(pos[:,0], pos[:,1], marker='o')
-plt.xlabel('X (cm)')
-plt.ylabel('Y (cm)')
-plt.title('XY Projection')
-plt.axis('equal')
+plt.plot(time, velocities[:,0], label='X Velocity (m/s)')
+plt.plot(time, velocities[:,1], label='Y Velocity (m/s)')
+plt.plot(time, velocities[:,2], label='Z Velocity (m/s)')
+plt.xlabel('Time (s)')
+plt.ylabel('Velocities (m/s)')
+plt.title('Velocities vs Time (with Gravity Removed)')
+plt.legend()
 plt.grid(True)
 
-# Plot XZ projection
-plt.figure()
-plt.plot(pos[:,0], pos[:,2], marker='o')
-plt.xlabel('X (cm)')
-plt.ylabel('Z (cm)')
-plt.title('XZ Projection')
-plt.axis('equal')
-plt.grid(True)
+# # Plot XY projection
+# plt.figure()
+# plt.plot(pos[:,0], pos[:,1], marker='o')
+# plt.xlabel('X (cm)')
+# plt.ylabel('Y (cm)')
+# plt.title('XY Projection')
+# plt.axis('equal')
+# plt.grid(True)
 
-# Plot YZ projection
-plt.figure()
-plt.plot(pos[:,1], pos[:,2], marker='o')
-plt.xlabel('Y (cm)')
-plt.ylabel('Z (cm)')
-plt.title('YZ Projection')
-plt.axis('equal')
-plt.grid(True)
+# # Plot XZ projection
+# plt.figure()
+# plt.plot(pos[:,0], pos[:,2], marker='o')
+# plt.xlabel('X (cm)')
+# plt.ylabel('Z (cm)')
+# plt.title('XZ Projection')
+# plt.axis('equal')
+# plt.grid(True)
+
+# # Plot YZ projection
+# plt.figure()
+# plt.plot(pos[:,1], pos[:,2], marker='o')
+# plt.xlabel('Y (cm)')
+# plt.ylabel('Z (cm)')
+# plt.title('YZ Projection')
+# plt.axis('equal')
+# plt.grid(True)
 
 plt.show()
