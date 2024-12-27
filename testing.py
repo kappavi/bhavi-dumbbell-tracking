@@ -2,8 +2,48 @@ import numpy as np
 import matplotlib.pyplot as plt
 from scipy.spatial.transform import Rotation as R
 
-
+# Ideal Rotation Data: 180 degrees about the x-axis
 data = """
+Acceleration X: 0.00, Y: 0.00, Z: 9.81 m/s^2
+Rotation X: 0.00, Y: 3.14, Z: 0.00 rad/s
+Temperature: 25.00 degC
+Acceleration X: 0.00, Y: 0.00, Z: 9.81 m/s^2
+Rotation X: 0.00, Y: 3.14, Z: 0.00 rad/s
+Temperature: 25.05 degC
+Acceleration X: 0.00, Y: 0.00, Z: 9.81 m/s^2
+Rotation X: 0.00, Y: 3.14, Z: 0.00 rad/s
+Temperature: 25.10 degC
+Acceleration X: 0.00, Y: 0.00, Z: 9.81 m/s^2
+Rotation X: 0.00, Y: 3.14, Z: 0.00 rad/s
+Temperature: 25.15 degC
+Acceleration X: 0.00, Y: 0.00, Z: 9.81 m/s^2
+Rotation X: 0.00, Y: 3.14, Z: 0.00 rad/s
+Temperature: 25.20 degC
+Acceleration X: 0.00, Y: 0.00, Z: 9.81 m/s^2
+Rotation X: 0.00, Y: 3.14, Z: 0.00 rad/s
+Temperature: 25.25 degC
+Acceleration X: 0.00, Y: -0.00, Z: 9.81 m/s^2
+Rotation X: 0.00, Y: 3.14, Z: 0.00 rad/s
+Temperature: 25.30 degC
+Acceleration X: 0.00, Y: 0.00, Z: 9.81 m/s^2
+Rotation X: 0.00, Y: 3.14, Z: 0.00 rad/s
+Temperature: 25.35 degC
+Acceleration X: 0.00, Y: 0.00, Z: 9.81 m/s^2
+Rotation X: 0.00, Y: 3.14, Z: 0.00 rad/s
+Temperature: 25.40 degC
+Acceleration X: 0.00, Y: 0.00, Z: 9.81 m/s^2
+Rotation X: 0.00, Y: 3.14, Z: 0.00 rad/s
+Temperature: 25.45 degC
+Acceleration X: 0.00, Y: 0.00, Z: 9.81 m/s^2
+Rotation X: 0.00, Y: 3.14, Z: 0.00 rad/s
+Temperature: 25.50 degC
+Acceleration X: 0.00, Y: 0.00, Z: 9.81 m/s^2
+Rotation X: 0.00, Y: 3.14, Z: 0.00 rad/s
+Temperature: 25.55 degC
+"""
+
+# Sample Rotations Data
+data4 = """
 Acceleration X: -0.56, Y: 1.53, Z: 8.92 m/s^2
 Rotation X: -0.06, Y: -0.02, Z: 0.03 rad/s
 Temperature: 34.88 degC
@@ -61,6 +101,8 @@ Rotation X: -0.11, Y: -0.03, Z: 0.01 rad/s
 Temperature: 35.38 degC
 
 """
+
+# Validate Acc,Vel,Pos Graphs
 data5 = """
 Acceleration X: 1.62, Y: 0.20, Z: 8.93 m/s^2
 Rotation X: -0.08, Y: -0.02, Z: 0.03 rad/s
@@ -114,7 +156,8 @@ Acceleration X: 1.89, Y: -0.48, Z: 8.86 m/s^2
 Rotation X: -0.13, Y: 0.03, Z: 0.10 rad/s
 Temperature: 33.94 degC"""
 
-data2 = """
+# IDEAL POSITION
+data2 = """ 
 Acceleration X: 0.00, Y: 0.00, Z: -9.81 m/s^2
 Rotation X: 0.00, Y: 0.00, Z: 0.00 rad/s
 Temperature: 25.00 degC
@@ -228,6 +271,8 @@ Rotation X: 0.00, Y: 0.00, Z: 0.00 rad/s
 Temperature: 25.15 degC
 
 """
+
+# Random Data
 data2 = """
 Acceleration X: -1.04, Y: 6.12, Z: 6.79 m/s^2
 Rotation X: -0.14, Y: -0.05, Z: 0.03 rad/s
@@ -371,19 +416,20 @@ num_samples = len(accelerations)
 # Estimate gravity from the first reading
 initial_acc = accelerations[0]
 norm_g = np.linalg.norm(initial_acc)
-gravity_vector = (initial_acc / norm_g) * 9.80665
+gravity_vector = (initial_acc / norm_g) * 9.81 # * 9.80665
 
 positions = [np.zeros(3)]
 velocities = [np.zeros(3)]
 rawAccelerations = accelerations
-print(accelerations[:,2])
-print(gravity_vector)
 accelerations[:,2] = accelerations[:,2] - gravity_vector[2]
 
 # Orientation tracking:
-# Start with identity orientation
-current_orientation = R.from_euler('xyz', [0,0,0], degrees=False)
+# Start with identity orientation (Initial quaternion)
+current_orientation = R.from_quat([0, 0, 0, 1])  # current_orientation = R.from_euler('xyz', [0,0,0], degrees=False)
 orientations = [current_orientation]
+print("setup")
+print(current_orientation)
+print(orientations)
 
 for i in range(1, num_samples):
     # Remove gravity
@@ -398,23 +444,39 @@ for i in range(1, num_samples):
 
     # Orientation update:
     # Integrate gyro (in rad/s) over dt to get rotation vector
+    # omega = rotations[i]  # [gx, gy, gz]
+    # delta_theta = omega * dt  # small rotation
+    # delta_rotation = R.from_rotvec(delta_theta)
+    # current_orientation = orientations[-1] * delta_rotation
+    # orientations.append(current_orientation)
+
     omega = rotations[i]  # [gx, gy, gz]
-    delta_theta = omega * dt  # small rotation
-    delta_rotation = R.from_rotvec(delta_theta)
+    delta_rotation = R.from_rotvec(omega * dt)
     current_orientation = orientations[-1] * delta_rotation
-    orientations.append(current_orientation)
+    # current_orientation = R.from_quat(current_orientation.as_quat() / np.linalg.norm(current_orientation.as_quat())) # prevent numerical drift
+    orientations.append(current_orientation.as_quat())
+    print(i)
+    print(current_orientation.as_quat())
 
 positions = np.array(positions)
 velocities = np.array(velocities)
 time = np.arange(num_samples)*dt
 
 # Extract Euler angles (roll, pitch, yaw)
+# euler_angles = []
+# for o in orientations:
+#     # 'xyz' convention: roll around X, pitch around Y, yaw around Z
+#     euler = o.as_euler('xyz', degrees=True)  # in degrees
+#     euler_angles.append(euler)
+# euler_angles = np.array(euler_angles)
 euler_angles = []
-for o in orientations:
-    # 'xyz' convention: roll around X, pitch around Y, yaw around Z
-    euler = o.as_euler('xyz', degrees=True)  # in degrees
+for quat in orientations:
+    print(quat)
+    #o = R.from_quat(quat)
+    euler = [quat].as_euler('xyz', degrees=True)
     euler_angles.append(euler)
 euler_angles = np.array(euler_angles)
+
 roll = euler_angles[:,0]
 pitch = euler_angles[:,1]
 yaw = euler_angles[:,2]
@@ -427,8 +489,8 @@ plt.plot(time, accelerations[:,1], label='Ay (m/s²)')
 plt.plot(time, accelerations[:,2], label='Az (m/s²)')
 plt.title('Accelerations')
 plt.xlabel('Time (s)')
-plt.ylabel('Acceleration (m/s²)')
-# plt.legend()
+plt.ylabel('Acceleration (m/s²) (with Gravity Removed)')
+plt.legend()
 plt.grid(True)
 
 # Plot Roll, Pitch, Yaw
@@ -440,18 +502,18 @@ plt.plot(time, yaw, label='Yaw (deg)')
 plt.title('Roll, Pitch, Yaw vs Time')
 plt.xlabel('Time (s)')
 plt.ylabel('Angle (degrees)')
-# plt.legend()
+plt.legend()
 plt.grid(True)
 
-# Plot Roll, Pitch, Yaw
+# Plot Roll, Pitch, Yaw Rates
 plt.subplot(3, 3, 5)
 # plt.figure()
 plt.plot(time, rotations[:,0], label='Roll Rate (deg/s)')
 plt.plot(time, rotations[:,1], label='Pitch Rate (deg/s)')
 plt.plot(time, rotations[:,2], label='Yaw Rate(deg/s)')
-plt.title('Change in Roll, Pitch, Yaw vs Time')
+plt.title('Roll, Pitch, Yaw Rates vs Time')
 plt.xlabel('Time (s)')
-plt.ylabel('Angle (degrees)')
+plt.ylabel('Angle (degrees/s)')
 # plt.legend()
 plt.grid(True)
 
