@@ -514,14 +514,14 @@ for i in range(1, num_samples):
     # acc_linear = accelerations[i]
     acc_linear[2] = acc_linear[2] - gravity_vector[2]
     rotatedAccelerations[i] = acc_linear
-    print(acc_linear)
+    # print(acc_linear)
     v = velocities[-1] + acc_linear * dt
     p = positions[-1] + v * dt
 
     velocities.append(v)
     positions.append(p)
 
-
+rotatedAccelerations[0] = [0, 0, 0] 
 positions = np.array(positions)
 velocities = np.array(velocities)
 time = np.arange(num_samples)*dt
@@ -583,6 +583,10 @@ plt.grid(True)
 # Plot Roll, Pitch, Yaw
 plt.subplot(3, 3, 2)
 # plt.figure()
+print("time:")
+print(time)
+print("roll:")
+print(roll)
 plt.plot(time, roll, label='Roll (deg)')
 plt.plot(time, pitch, label='Pitch (deg)')
 plt.plot(time, yaw, label='Yaw (deg)')
@@ -608,6 +612,7 @@ plt.grid(True)
 # Plot Positions (m)
 plt.subplot(3, 3, 7)
 # plt.figure()
+print(positions)
 plt.plot(time, positions[:,0], label='X Position (m)')
 plt.plot(time, positions[:,1], label='Y Position (m)')
 plt.plot(time, positions[:,2], label='Z Position (m)')
