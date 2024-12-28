@@ -10,6 +10,7 @@
 
 Adafruit_MPU6050 mpu;
 bool collecting;
+bool first_round;
 
 void setup(void) {
   Serial.begin(115200);
@@ -87,6 +88,7 @@ void setup(void) {
   }
 
   Serial.println("");
+  Serial.println("Setup complete!");
   delay(100);
 }
 
@@ -101,13 +103,20 @@ void loop() {
       Serial.println("Data collection stopped.");
     } else if (input.equalsIgnoreCase("z")) {
       collecting = true;
+      first_round = true;
       Serial.println("Data collection started.");
     }
   }
   if (collecting) {
+    if (first_round) {
+      // purely for logging purposes to make sure can line up consoles
+      Serial.print("BEGINNING\n");
+      first_round = false;
+    }
     sensors_event_t a, g, temp;
     mpu.getEvent(&a, &g, &temp);
 
+    // Serial.print("BEGINNING\n");
     /* Print out the values */
     Serial.print("Acceleration X: ");
     Serial.print(a.acceleration.x);
