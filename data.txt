@@ -1,0 +1,60 @@
+Acceleration X: 95.61, Y: 12.28, Z: -12.10 m/s^2
+Rotation X: 0.61, Y: 0.77, Z: 0.77 rad/s
+Temperature: 49.33 degC
+
+Acceleration X: -156.91, Y: -77.23, Z: 44.13 m/s^2
+Rotation X: 0.04, Y: -2.19, Z: -0.15 rad/s
+Temperature: 36.53 degC
+
+Acceleration X: -156.83, Y: -156.91, Z: -77.23 m/s^2
+Rotation X: 0.04, Y: -7.10, Z: -0.15 rad/s
+Temperature: 65.14 degC
+
+Acceleration X: -156.91, Y: -77.23, Z: 47.81 m/s^2
+Rotation X: 11.17, Y: 0.26, Z: -0.15 rad/s
+Temperature: -36.51 degC
+
+Acceleration X: -156.91, Y: -77.23, Z: 50.26 m/s^2
+Rotation X: 11.71, Y: 23.96, Z: -0.20 rad/s
+Temperature: -30.48 degC
+
+Acceleration X: 87.03, Y: 12.28, Z: -11.70 m/s^2
+Rotation X: 0.57, Y: 0.77, Z: 0.77 rad/s
+Temperature: 49.33 degC
+
+Acceleration X: -156.91, Y: -77.23, Z: 89.49 m/s^2
+Rotation X: 0.08, Y: 34.59, Z: -0.15 rad/s
+Temperature: 36.53 degC
+
+Acceleration X: -156.83, Y: -156.91, Z: -77.23 m/s^2
+Rotation X: 0.08, Y: 31.05, Z: -0.15 rad/s
+Temperature: 93.00 degC
+
+Acceleration X: -156.91, Y: -77.23, Z: 94.39 m/s^2
+Rotation X: 0.08, Y: 27.23, Z: 0.12 rad/s
+Temperature: 36.53 degC
+
+Acceleration X: -156.83, Y: -156.91, Z: -77.23 m/s^2
+Rotation X: 22.07, Y: 19.06, Z: -0.18 rad/s
+Temperature: 96.01 degC
+
+Acceleration X: -156.91, Y: -77.23, Z: 99.29 m/s^2
+Rotation X: 0.00, Y: 22.61, Z: 21.24 rad/s
+Temperature: 97.52 degC
+
+Acceleration X: -156.83, Y: -156.91, Z: -77.23 m/s^2
+Rotation X: 23.16, Y: 23.42, Z: -0.17 rad/s
+Temperature: 99.02 degC
+
+Acceleration X: -156.91, Y: -77.23, Z: 104.20 m/s^2
+Rotation X: 23.70, Y: -22.08, Z: -0.20 rad/s
+Temperature: 36.53 degC
+
+Acceleration X: -156.83, Y: -156.91, Z: -77.23 m/s^2
+Rotation X: 24.25, Y: 0.26, Z: -0.15 rad/s
+Temperature: 102.04 degC
+
+Acceleration X: -156.83, Y: -156.91, Z: -77.23 m/s^2
+Rotation X: 0.10, Y: 3.80, Z: -0.15 rad/s
+Temperature: 103.54 degC
+

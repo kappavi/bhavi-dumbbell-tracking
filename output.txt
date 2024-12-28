@@ -1,0 +1,5 @@
+Adafruit MPU6050 test!
+MPU6050 Found!
+Accelerometer range set to: +-8G
+Gyro range set to: +- 500 deg/s
+Filter bandwidth set to: 5 Hz
