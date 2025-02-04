@@ -57,7 +57,7 @@ def main():
                 ser.write(('c' + '\n').encode('utf-8')) # tells arduino to stop collecting data
             count = 0
             # Optionally, let user type commands in Python console
-            user_input = input("Enter command (z/c) or 'quit': ").strip()
+            user_input = input("Enter integer or 'quit': ").strip()
             if user_input.lower() == 'quit':
                 print("Exiting...")
                 f.close()
