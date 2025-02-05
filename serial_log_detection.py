@@ -1,5 +1,14 @@
 import serial
 import time
+import json
+
+def load_config(filename):
+    with open(filename, 'r') as file:
+        config_data = json.load(file)
+    return config_data
+
+config = load_config('config.json')
+GLOBAL_DT = config['GLOBAL_DT'] # .1 as of 20250204
 
 def main():
     port = '/dev/cu.usbmodem1101'  # <-- Change to your actual serial port
@@ -12,7 +21,7 @@ def main():
 
         print("Connected to Arduino on", port)
         print("Type an integer between 1 and 100 (representing number of data points you want to collect, or 'quit' "
-              "to exit.")
+              "to exit. Global DT right now is", GLOBAL_DT)
         print()
 
         count = 0
@@ -51,7 +60,7 @@ def main():
                             f.write(line_empty)
                             print(line_empty, end='')
                         # print()
-                    time.sleep(.5) # TODO need to set this to GLOBAL_DT value eventually
+                    time.sleep(GLOBAL_DT) # TODO need to set this to GLOBAL_DT value eventually
                 print("Data collection complete.")
                 f.flush()
                 ser.write(('c' + '\n').encode('utf-8')) # tells arduino to stop collecting data
