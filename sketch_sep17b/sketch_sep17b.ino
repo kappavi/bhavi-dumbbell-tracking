@@ -7,15 +7,46 @@
 #include <Adafruit_MPU6050.h>
 #include <Adafruit_Sensor.h>
 #include <Wire.h>
+#include <ArduinoJson.h>
+// #include <FS.h>
 
 Adafruit_MPU6050 mpu;
 bool collecting;
 bool first_round;
+float GLOBAL_DT = .1;
+unsigned long LOCAL_DT = GLOBAL_DT * 1000;
 
 void setup(void) {
   Serial.begin(115200);
   while (!Serial)
     delay(10); // will pause Zero, Leonardo, etc until serial console opens
+
+  /*
+  Commented this out because right now there is no trivial way for arduino to read data from computer.
+  Let's just hardcode for now
+
+  // Open the JSON file
+  File configFile = SPIFFS.open("/config.json", "r");
+  if (!configFile) {
+    Serial.println("Failed to open config file");
+    return;
+  }
+
+  StaticJsonDocument<512> doc; // static document is fine because config is small 
+
+  // parse jsona nd print error if some problem is there 
+  DeserializationError error = deserializeJson(doc, configFile);
+  if (error) {
+    Serial.print("Failed to parse config file: ");
+    Serial.println(error.c_str());
+    return;
+  }
+
+  // value extraction
+  float GLOBAL_DT = doc["GLOBAL_DT"];
+  int LOCAL_DT = GLOBAL_DT * 1000; // convert to ms 
+
+  */
 
   Serial.println("Adafruit MPU6050 test!");
 
@@ -23,7 +54,7 @@ void setup(void) {
   if (!mpu.begin()) {
     Serial.println("Failed to find MPU6050 chip");
     while (1) {
-      delay(10);
+      delay(10); // need to restart if failed to find chip
     }
   }
   Serial.println("MPU6050 Found!");
@@ -139,7 +170,7 @@ void loop() {
     Serial.println(" degC");
 
     Serial.println("");
-    delay(500);
+    delay(LOCAL_DT);
   }
 }
 
