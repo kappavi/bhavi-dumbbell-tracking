@@ -1,0 +1,1 @@
+This is a project where we are trying to create a tracking sensor that we can attach to dumbbells, in order to read path information and provide input to users about their form and weak spots during certain exercises. 
