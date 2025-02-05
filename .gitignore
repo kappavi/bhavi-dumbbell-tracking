@@ -31,6 +31,9 @@
 *.out
 *.app
 
+# ide and cache
 *.idea
 *.vscode
 **/.DS_Store
+__pycache__/
+*.py[cod]
